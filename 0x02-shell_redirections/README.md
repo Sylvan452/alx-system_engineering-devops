@@ -9,3 +9,4 @@ containing the text Best School ending by a new line
 writes into the file ls_cwd_content the result of the command ls -la
 script that duplicates the last line of the file iacta
 deletes all the regular files (not the directories) with a .js
+counts the number of directories and sub-directories in the current directory
