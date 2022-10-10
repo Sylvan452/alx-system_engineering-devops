@@ -21,3 +21,4 @@ Replace all characters A and c from input to Z and e respectively
 Create a script that removes all letters c and C from input
 script that reverse its input
 displays all users and their home directories, sorted by users
+command that finds all empty files and directories in the current directory and all sub-directories
