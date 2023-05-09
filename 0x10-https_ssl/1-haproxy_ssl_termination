@@ -1,4 +1,5 @@
-global
+
+bal
         log /dev/log    local0
         log /dev/log    local1 notice
         chroot /var/lib/haproxy
@@ -32,19 +33,23 @@ defaults
         errorfile 502 /etc/haproxy/errors/502.http
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
-
-frontend myfrontend
-        bind *:80
-        bind *:443 ssl crt /etc/haproxy/certs/www.trimaxdigital.tech.pem
-        default_backend myservers
-
-backend myservers
-<<<<<<< HEAD
-	balance roundrobin
-	server 176061-web-01 54.87.240.99:80 check
-	server 176061-web-02 3.85.148.188:80 check
-=======
+listen http-in
+        bind :80
         balance roundrobin
         server 176061-web-01 54.87.240.99:80 check
         server 176061-web-02 3.85.148.188:80 check
->>>>>>> 8ef2fc39504301f3d07eba7431c8811db4df0eee
+
+frontend  trimaxdigital-frontend
+        bind *:80
+        mode http
+        default_backend trimaxdigital-backend
+
+frontend trimaxdigital-frontend-https
+        bind *:443 ssl crt /etc/haproxy/certs/www.trimaxdigital.tech.pem
+        http-request set-header X-Forwarded-Proto https
+        default_backend trimaxdigital-backend
+
+backend trimaxdigital-backend
+        balance roundrobin
+        server 176061-web-01 54.87.240.99:80 check
+        server 176061-web-02 3.85.148.188:80 check
