@@ -13,7 +13,7 @@ server_config=\
 frontend  trimaxdigital-frontend
         bind *:80
         mode http
-        default_backend ehoneah-backend
+        default_backend trimaxdigital-backend
 backend trimaxdigital-backend
         balance roundrobin
         server 176061-web-01 54.87.240.99:80 check
