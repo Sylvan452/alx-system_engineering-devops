@@ -33,23 +33,22 @@ defaults
         errorfile 502 /etc/haproxy/errors/502.http
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
-listen http-in
-        bind :80
-        balance roundrobin
-        server 176061-web-01 54.87.240.99:80 check
-        server 176061-web-02 3.85.148.188:80 check
-
-frontend  trimaxdigital-frontend
+frontend myfrontend
         bind *:80
-        mode http
-        default_backend trimaxdigital-backend
+        http-request redirect scheme https unless { ssl_fc }
+        default_backend myservers
 
-frontend trimaxdigital-frontend-https
-        bind *:443 ssl crt /etc/haproxy/certs/www.trimaxdigital.tech.pem
-        http-request set-header X-Forwarded-Proto https
-        default_backend trimaxdigital-backend
+frontend www-https
+        bind *:443 ssl crt /etc/haproxy/certs/cert_dns.pem
+        http-request add-header X-Forwarded-Proto https
+        acl letsencrypt-req path_beg /.well-known/acme-challenge/
+        use_backend letsencrypt if letsencrypt-req
+        default_backend myservers
 
-backend trimaxdigital-backend
+backend myservers
         balance roundrobin
         server 176061-web-01 54.87.240.99:80 check
         server 176061-web-02 3.85.148.188:80 check
+
+backend letsencrypt
+        server letsencrypt 127.0.0.1:54321
