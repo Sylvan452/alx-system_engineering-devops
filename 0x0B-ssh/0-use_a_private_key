@@ -8,3 +8,4 @@ ssh -i ~/.ssh/school ubuntu@54.197.131.111
 
 ssh -i ~/.ssh/school ubuntu@100.25.26.144
 >>>>>>> 8ef2fc39504301f3d07eba7431c8811db4df0eee
+>>>>>>> origin/master
